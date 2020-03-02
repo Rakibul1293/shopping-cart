@@ -1,76 +1,4 @@
-const sellCrossBtn = document.getElementById("sellCrossBtn");
-const caseCrossBtn = document.getElementById("caseCrossBtn");
-const val = 0;
-
-function sellCaseCrossBtn(event) {
-    var elementIds = getId(event.target.id);
-    console.log(elementIds);
-
-    elementIds.style.display = "none";
-    setZero(event);
-}
-
-function getId(id) {
-    var id = id;
-
-    if (id == "sellCrossBtn") {
-        console.log(id);
-        return document.getElementById("sell-area");
-    }
-    console.log(id);
-    return document.getElementById("case-area");
-}
-
-function setZero(event) {
-    var element = event.target;
-    var elementId = element.id;
-    console.log(elementId);
-
-    const subtotal = document.getElementById("subtotal").innerText;
-    const subtotalNumber = parseFloat(subtotal);
-    console.log("subtotalNumber:", subtotalNumber);
-
-    const tax = document.getElementById("tax").innerText;
-    const taxNumber = parseFloat(tax);
-    console.log("taxNumber:", taxNumber);
-
-    const sellCurrentBalance = document.getElementById("sellCurrentBalance").innerText;
-    const sellCurrentBalancelNumber = parseFloat(sellCurrentBalance);
-    console.log("sellCurrentBalancelNumber:", sellCurrentBalancelNumber);
-
-    const caseCurrentBalance = document.getElementById("caseCurrentBalance").innerText;
-    const caseCurrentBalanceNumber = parseFloat(caseCurrentBalance);
-    console.log("caseCurrentBalanceNumber:", caseCurrentBalanceNumber);
-
-    const total = document.getElementById("total").innerText;
-    const totalNumber = parseFloat(total);
-    console.log("totalNumber:", totalNumber);
-
-    if (event.target.id == "sellCrossBtn") {
-        document.getElementById("subtotal").innerText = subtotalNumber - sellCurrentBalance;
-        document.getElementById("tax").innerText = 0;
-        if (totalNumber !== 0) {
-            document.getElementById("total").innerText = subtotalNumber - sellCurrentBalance;
-            document.getElementById("tax").innerText = 0;
-        }
-    }
-    else if (event.target.id == "caseCrossBtn") {
-        document.getElementById("subtotal").innerText = subtotalNumber - caseCurrentBalanceNumber;
-        if (totalNumber !== 0) {
-            document.getElementById("total").innerText = subtotalNumber - caseCurrentBalanceNumber;
-        }
-    }
-    else {
-        document.getElementById("subtotal").innerText = 0;
-        document.getElementById("total").innerText = 0;
-        document.getElementById("tax").innerText = 0;
-    }
-}
-sellCrossBtn.addEventListener("click", sellCaseCrossBtn);
-caseCrossBtn.addEventListener("click", sellCaseCrossBtn);
-
-
-
+// number of product(increment-decrement) section
 const sellDec = document.getElementById("sell-dec");
 const sellInc = document.getElementById("sell-inc");
 const caseDec = document.getElementById("case-dec");
@@ -132,6 +60,7 @@ function getInputTextNumber(id) {
     const amountNumber = parseFloat(amount);
     return amountNumber;
 }
+
 
 
 function getSpanText(sellId, id, currentNumber) {
@@ -274,6 +203,7 @@ function getBalanceText(sellId, balanceId, balanceNumber) {
 
 
 
+// calculation of total balance section
 sellDec.addEventListener("click", sellDecs);
 sellInc.addEventListener("click", sellIncs);
 caseDec.addEventListener("click", caseDecs);
@@ -295,5 +225,76 @@ function totalBalance(event) {
 
     const totalAmounts = currentSubtotalNumber + currentTaxNumber;
     document.getElementById("total").innerText = totalAmounts;
+
+    if (currentSubtotalNumber == 0) {
+        document.getElementById("message").innerText = "Opps !!! Your Cart is Empty.";
+    }
+    else {
+        document.getElementById("message").innerText = "For total balance, please click this Check Out Button.";
+    }
 }
 checkOut.addEventListener("click", totalBalance);
+
+
+
+// after cart deleting section
+const sellCrossBtn = document.getElementById("sellCrossBtn");
+const caseCrossBtn = document.getElementById("caseCrossBtn");
+
+function sellCaseCrossBtn(event) {
+    var elementIds = getId(event.target.id);
+    console.log(elementIds);
+
+    elementIds.style.display = "none";
+    setValue();
+}
+
+function getId(id) {
+    var id = id;
+
+    if (id == "sellCrossBtn") {
+        console.log(id);
+        return document.getElementById("sell-area");
+    }
+    console.log(id);
+    return document.getElementById("case-area");
+}
+
+function setValue() {
+    const subtotal = document.getElementById("subtotal").innerText;
+    const subtotalNumber = parseFloat(subtotal);
+    console.log("subtotalNumber:", subtotalNumber);
+
+    const tax = document.getElementById("tax").innerText;
+    const taxNumber = parseFloat(tax);
+    console.log("taxNumber:", taxNumber);
+
+    const sellCurrentBalance = document.getElementById("sellCurrentBalance").innerText;
+    const sellCurrentBalancelNumber = parseFloat(sellCurrentBalance);
+    console.log("sellCurrentBalancelNumber:", sellCurrentBalancelNumber);
+
+    const caseCurrentBalance = document.getElementById("caseCurrentBalance").innerText;
+    const caseCurrentBalanceNumber = parseFloat(caseCurrentBalance);
+    console.log("caseCurrentBalanceNumber:", caseCurrentBalanceNumber);
+
+    const total = document.getElementById("total").innerText;
+    const totalNumber = parseFloat(total);
+    console.log("totalNumber:", totalNumber);
+
+    if (event.target.id == "sellCrossBtn") {
+        document.getElementById("subtotal").innerText = subtotalNumber - sellCurrentBalance;
+        document.getElementById("tax").innerText = 0;
+        if (totalNumber !== 0) {
+            document.getElementById("total").innerText = subtotalNumber - sellCurrentBalance;
+            document.getElementById("tax").innerText = 0;
+        }
+    }
+    else if (event.target.id == "caseCrossBtn") {
+        document.getElementById("subtotal").innerText = subtotalNumber - caseCurrentBalanceNumber;
+        if (totalNumber !== 0) {
+            document.getElementById("total").innerText = subtotalNumber - caseCurrentBalanceNumber;
+        }
+    }
+}
+sellCrossBtn.addEventListener("click", sellCaseCrossBtn);
+caseCrossBtn.addEventListener("click", sellCaseCrossBtn);
