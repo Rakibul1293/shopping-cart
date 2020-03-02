@@ -26,9 +26,45 @@ function setZero(event) {
     var elementId = element.id;
     console.log(elementId);
 
-    document.getElementById("subtotal").innerText = "$0";
-    document.getElementById("tax").innerText = "$0";
-    document.getElementById("total").innerText = "$0";
+    const subtotal = document.getElementById("subtotal").innerText;
+    const subtotalNumber = parseFloat(subtotal);
+    console.log("subtotalNumber:", subtotalNumber);
+
+    const tax = document.getElementById("tax").innerText;
+    const taxNumber = parseFloat(tax);
+    console.log("taxNumber:", taxNumber);
+
+    const sellCurrentBalance = document.getElementById("sellCurrentBalance").innerText;
+    const sellCurrentBalancelNumber = parseFloat(sellCurrentBalance);
+    console.log("sellCurrentBalancelNumber:", sellCurrentBalancelNumber);
+
+    const caseCurrentBalance = document.getElementById("caseCurrentBalance").innerText;
+    const caseCurrentBalanceNumber = parseFloat(caseCurrentBalance);
+    console.log("caseCurrentBalanceNumber:", caseCurrentBalanceNumber);
+
+    const total = document.getElementById("total").innerText;
+    const totalNumber = parseFloat(total);
+    console.log("totalNumber:", totalNumber);
+
+    if (event.target.id == "sellCrossBtn") {
+        document.getElementById("subtotal").innerText = subtotalNumber - sellCurrentBalance;
+        document.getElementById("tax").innerText = 0;
+        if (totalNumber !== 0) {
+            document.getElementById("total").innerText = subtotalNumber - sellCurrentBalance;
+            document.getElementById("tax").innerText = taxNumber - 5;
+        }
+    }
+    else if (event.target.id == "caseCrossBtn") {
+        document.getElementById("subtotal").innerText = subtotalNumber - caseCurrentBalanceNumber;
+        if (totalNumber !== 0) {
+            document.getElementById("total").innerText = subtotalNumber - caseCurrentBalanceNumber;
+        }
+    }
+    else {
+        document.getElementById("subtotal").innerText = 0;
+        document.getElementById("total").innerText = 0;
+        document.getElementById("tax").innerText = 0;
+    }
 }
 sellCrossBtn.addEventListener("click", sellCaseCrossBtn);
 caseCrossBtn.addEventListener("click", sellCaseCrossBtn);
@@ -40,7 +76,7 @@ const sellInc = document.getElementById("sell-inc");
 const caseDec = document.getElementById("case-dec");
 const caseInc = document.getElementById("case-inc");
 
-function sellDecs(event) {
+function sellDecs() {
     const sellDecId = "sellDecVal";
     const sellDec = getInputValueNumber("sellDecVal");
     const balanceDec = getInputTextNumber("sellCurrentBalance");
@@ -50,7 +86,7 @@ function sellDecs(event) {
     getSpanText(sellDecId, "sellDecVal", sellDec);
     getBalanceText(sellDecId, "sellCurrentBalance", balanceDec);
 }
-function sellIncs(event) {
+function sellIncs() {
     const sellIncId = "sellIncVal";
     const sellInc = getInputValueNumber("sellDecVal");
     const balanceInc = getInputTextNumber("sellCurrentBalance");
@@ -60,7 +96,7 @@ function sellIncs(event) {
     getSpanText(sellIncId, "sellDecVal", sellInc);
     getBalanceText(sellIncId, "sellCurrentBalance", balanceInc);
 }
-function caseDecs(event) {
+function caseDecs() {
     const caseDecId = "caseDecVal";
     const caseDec = getInputValueNumber("caseDecVal");
     const balanceDec = getInputTextNumber("caseCurrentBalance");
@@ -70,7 +106,7 @@ function caseDecs(event) {
     getSpanText(caseDecId, "caseDecVal", caseDec);
     getBalanceText(caseDecId, "caseCurrentBalance", balanceDec);
 }
-function caseIncs(event) {
+function caseIncs() {
     const caseIncId = "caseIncVal";
     const caseInc = getInputValueNumber("caseDecVal");
     const balanceInc = getInputTextNumber("caseCurrentBalance");
@@ -80,6 +116,8 @@ function caseIncs(event) {
     getSpanText(caseIncId, "caseDecVal", caseInc);
     getBalanceText(caseIncId, "caseCurrentBalance", balanceInc);
 }
+
+
 
 function getInputValueNumber(id) {
     console.log(id);
@@ -95,6 +133,7 @@ function getInputTextNumber(id) {
     return amountNumber;
 }
 
+
 function getSpanText(sellId, id, currentNumber) {
     if (sellId == "sellDecVal") {
         console.log(currentNumber);
@@ -103,15 +142,12 @@ function getSpanText(sellId, id, currentNumber) {
         if (ckeckNumber == -1 || ckeckNumber == 0) {
             return document.getElementById(id).value = 0;
         }
-        return document.getElementById(id).value = totalAmount;
+        document.getElementById(id).value = totalAmount;
     }
     else if (sellId == "sellIncVal") {
         console.log(currentNumber);
         const totalAmount = currentNumber + 1;
         ckeckNumber = Math.sign(totalAmount);
-        if (ckeckNumber == -1 || ckeckNumber == 0) {
-            return document.getElementById(id).value = 0;
-        }
         document.getElementById(id).value = totalAmount;
     }
     else if (sellId == "caseDecVal") {
@@ -126,10 +162,6 @@ function getSpanText(sellId, id, currentNumber) {
     else if (sellId == "caseIncVal") {
         console.log(currentNumber);
         const totalAmount = currentNumber + 1;
-        ckeckNumber = Math.sign(totalAmount);
-        if (ckeckNumber == -1 || ckeckNumber == 0) {
-            return document.getElementById(id).value = 0;
-        }
         document.getElementById(id).value = totalAmount;
     }
 }
@@ -139,40 +171,71 @@ function getSpanText(sellId, id, currentNumber) {
 function getBalanceText(sellId, balanceId, balanceNumber) {
     if (sellId == "sellDecVal") {
         console.log(balanceNumber);
-        const subtotal = document.getElementById("subtotal").innerText
+        const subtotal = document.getElementById("subtotal").innerText;
         const subtotalNumber = parseFloat(subtotal);
+        console.log("subtotalNumber:", subtotalNumber);
+
+        const tax = document.getElementById("tax").innerText;
+        const taxNumber = parseFloat(tax);
+        console.log("taxNumber:", taxNumber);
+
+        const caseCurrentBalance = document.getElementById("caseCurrentBalance").innerText;
+        const caseCurrentBalanceNumber = parseFloat(caseCurrentBalance);
+        console.log("caseCurrentBalanceNumber:", caseCurrentBalanceNumber);
 
         const current = document.getElementById(balanceId).innerText;
         const currentNumber = parseFloat(current);
         const totalAmount = currentNumber - 1000;
+        console.log("totalAmount:", totalAmount);
+
         ckeckNumber = Math.sign(totalAmount);
         if (ckeckNumber == -1 || ckeckNumber == 0) {
             document.getElementById(balanceId).innerText = 0;
-            document.getElementById("subtotal").innerText = 0;
+            if (totalAmount == 0) {
+                document.getElementById("subtotal").innerText = subtotalNumber - 1000;
+                document.getElementById("tax").innerText = taxNumber - 5;
+            }
         }
-        document.getElementById(balanceId).innerText = totalAmount;
-        document.getElementById("subtotal").innerText = subtotalNumber;
+        else {
+            document.getElementById(balanceId).innerText = totalAmount;
+            document.getElementById("subtotal").innerText = subtotalNumber - 1000;
+            document.getElementById("tax").innerText = taxNumber - 5;
+        }
+        if (subtotalNumber == 1059) {
+            document.getElementById("subtotal").innerText = subtotalNumber - 1000;
+            document.getElementById("tax").innerText = taxNumber - 5;
+        }
+        if (caseCurrentBalanceNumber == 0 && totalAmount == 0) {
+            console.log("caseCurrentBalanceNumber: && totalAmount: ", caseCurrentBalanceNumber, totalAmount);
+            document.getElementById("subtotal").innerText = 0;
+            document.getElementById("tax").innerText = 0;
+        }
     }
     else if (sellId == "sellIncVal") {
         console.log(balanceNumber);
-        const subtotal = document.getElementById("subtotal").innerText
+        const subtotal = document.getElementById("subtotal").innerText;
         const subtotalNumber = parseFloat(subtotal);
+
+        const tax = document.getElementById("tax").innerText;
+        const taxNumber = parseFloat(tax);
+        console.log("taxNumber:", taxNumber);
 
         const current = document.getElementById(balanceId).innerText;
         const currentNumber = parseFloat(current);
         const totalAmount = currentNumber + 1000;
-        ckeckNumber = Math.sign(totalAmount);
-        if (ckeckNumber == -1 || ckeckNumber == 0) {
-            document.getElementById(balanceId).innerText = 0;
-            document.getElementById("subtotal").innerText = 0;
-        }
         document.getElementById(balanceId).innerText = totalAmount;
-        document.getElementById("subtotal").innerText = subtotalNumber;
+        document.getElementById("subtotal").innerText = subtotalNumber + 1000;
+        document.getElementById("tax").innerText = taxNumber + 5;
     }
     else if (sellId == "caseDecVal") {
         console.log(balanceNumber);
-        const subtotal = document.getElementById("subtotal").innerText
+        const subtotal = document.getElementById("subtotal").innerText;
         const subtotalNumber = parseFloat(subtotal);
+        console.log("subtotalNumber:", subtotalNumber);
+
+        const sellCurrentBalance = document.getElementById("sellCurrentBalance").innerText;
+        const sellCurrentBalancelNumber = parseFloat(sellCurrentBalance);
+        console.log("sellCurrentBalancelNumber:", sellCurrentBalancelNumber);
 
         const current = document.getElementById(balanceId).innerText;
         const currentNumber = parseFloat(current);
@@ -180,56 +243,57 @@ function getBalanceText(sellId, balanceId, balanceNumber) {
         ckeckNumber = Math.sign(totalAmount);
         if (ckeckNumber == -1 || ckeckNumber == 0) {
             document.getElementById(balanceId).innerText = 0;
+            if (totalAmount == 0) {
+                document.getElementById("subtotal").innerText = subtotalNumber - 59;
+            }
         }
-        document.getElementById(balanceId).innerText = totalAmount;
-        document.getElementById("subtotal").innerText = subtotalNumber - 59;
+        else {
+            document.getElementById(balanceId).innerText = totalAmount;
+            document.getElementById("subtotal").innerText = subtotalNumber - 59;
+        }
+        if (subtotalNumber == 1059) {
+            document.getElementById("subtotal").innerText = subtotalNumber - 59;
+        }
+        if (sellCurrentBalancelNumber == 0 && totalAmount == 0) {
+            console.log("sellCurrentBalancelNumber: && totalAmount: ", sellCurrentBalancelNumber, totalAmount);
+            document.getElementById("subtotal").innerText = 0;
+        }
     }
     else if (sellId == "caseIncVal") {
         console.log(balanceNumber);
-        const subtotal = document.getElementById("subtotal").innerText
+        const subtotal = document.getElementById("subtotal").innerText;
         const subtotalNumber = parseFloat(subtotal);
 
         const current = document.getElementById(balanceId).innerText;
         const currentNumber = parseFloat(current);
         const totalAmount = currentNumber + 59;
-        ckeckNumber = Math.sign(totalAmount);
-        if (ckeckNumber == -1 || ckeckNumber == 0) {
-            document.getElementById(balanceId).innerText = 0;
-        }
         document.getElementById(balanceId).innerText = totalAmount;
         document.getElementById("subtotal").innerText = subtotalNumber + 59;
     }
 }
+
+
 
 sellDec.addEventListener("click", sellDecs);
 sellInc.addEventListener("click", sellIncs);
 caseDec.addEventListener("click", caseDecs);
 caseInc.addEventListener("click", caseIncs);
 
+function totalBalance(event) {
+    event.preventDefault();
 
-// function totalBalance(event) {
-// event.preventDefault();
-// const subtotal = document.getElementById("subtotal");
-// const currentSubtotal = document.getElementById("subtotal").innerText;
-// const currentSubtotalNumber = parseFloat(currentSubtotal);
-// document.getElementById("subtotal").innerText = currentSubtotalNumber;
-// console.log(currentSubtotalNumber);
+    const currentSubtotal = document.getElementById("subtotal").innerText;
+    const currentSubtotalNumber = parseFloat(currentSubtotal);
+    document.getElementById("subtotal").innerText = currentSubtotalNumber;
+    console.log(currentSubtotalNumber);
 
-// // const tax = document.getElementById("tax");
-// const currentTax = document.getElementById("tax").innerText;
-// const currentTaxNumber = parseFloat(currentTax);
-// document.getElementById("tax").innerText = currentTaxNumber;
-// console.log(currentTaxNumber);
-
-// // const total = document.getElementById("total");
-// const currentTotal = document.getElementById("total").innerText;
-// const currentTotalNumber = parseFloat(currentTotal);
-// document.getElementById("total").innerText = currentTotalNumber;
-// console.log(currentTotalNumber);
-
-// const totalAmounts = currentSubtotalNumber + currentTaxNumber + currentTotalNumber;
-// document.getElementById("total").innerText = totalAmounts;
-// }
-// checkOut.addEventListener("click", totalBalance);
+    const currentTax = document.getElementById("tax").innerText;
+    const currentTaxNumber = parseFloat(currentTax);
+    document.getElementById("tax").innerText = currentTaxNumber;
+    console.log(currentTaxNumber);
 
 
+    const totalAmounts = currentSubtotalNumber + currentTaxNumber;
+    document.getElementById("total").innerText = totalAmounts;
+}
+checkOut.addEventListener("click", totalBalance);
