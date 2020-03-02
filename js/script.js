@@ -51,7 +51,7 @@ function setZero(event) {
         document.getElementById("tax").innerText = 0;
         if (totalNumber !== 0) {
             document.getElementById("total").innerText = subtotalNumber - sellCurrentBalance;
-            document.getElementById("tax").innerText = taxNumber - 5;
+            document.getElementById("tax").innerText = 0;
         }
     }
     else if (event.target.id == "caseCrossBtn") {
